@@ -609,7 +609,7 @@ class ParkinsonsMLClassifier:
 # PART 3: UTILITY FUNCTIONS
 # ============================================================================
 
-def generate_simulated_data(duration=20, sampling_rate=100, has_parkinsons=False):
+def generate_simulated_data(duration=20, sampling_rate=50, has_parkinsons=False):
     """
     Generate synthetic accelerometer data for testing
     
@@ -659,6 +659,12 @@ def load_colmi_data(filepath):
     acc_data = df[['acc_x', 'acc_y', 'acc_z']].values
     return acc_data
 
+def load_colmi_data2(filepath):
+    """Load accelerometer data from Colmi ring - adjust to your format"""
+    df = pd.read_csv(filepath)
+    acc_data = df[['accX', 'accY', 'accZ']].values
+    return acc_data
+
 
 # ============================================================================
 # PART 4: COMPLETE EXAMPLE USAGE
@@ -685,12 +691,21 @@ if __name__ == "__main__":
     for i in range(15):
         acc_data = generate_simulated_data(duration=20, has_parkinsons=False)
         patient_data.append((acc_data, 0))  # 0 = healthy
+
+    """ print("Generating simulated patient data...")
     
     for i in range(15):
         acc_data = generate_simulated_data(duration=20, has_parkinsons=True)
         patient_data.append((acc_data, 1))  # 1 = Parkinson's
     
-    print(f"Generated {len(patient_data)} simulated patients")
+    print(f"Generated {len(patient_data)} simulated patients") """
+
+    
+    print("loading colmi patient data...")
+
+    acc_data = load_colmi_data2("/Users/sundarveliah/Downloads/POO5SentTrial2.ring_data_20251221_234508.csv")
+    patient_data.append((acc_data, 1))  # 1 = Parkinson's
+
     
     # ========================================================================
     # STEP 2: Extract Features
@@ -699,7 +714,7 @@ if __name__ == "__main__":
     print("STEP 2: Feature Extraction")
     print("="*80)
     
-    feature_extractor = ParkinsonsFeaturesExtractor(sampling_rate=100)
+    feature_extractor = ParkinsonsFeaturesExtractor(sampling_rate=50)
     ml_classifier = ParkinsonsMLClassifier(feature_extractor)
     
     X, y = ml_classifier.prepare_dataset(patient_data)
