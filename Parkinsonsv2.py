@@ -40,7 +40,7 @@ import joblib
 class MicrographiaDetector:
     """Detects progressive micrographia from accelerometer data"""
     
-    def __init__(self, sampling_rate: int = 100, segment_duration: float = 2.0):
+    def __init__(self, sampling_rate: int = 50, segment_duration: float = 2.0):
         self.sampling_rate = sampling_rate
         self.segment_duration = segment_duration
         self.segment_samples = int(segment_duration * sampling_rate)
@@ -172,7 +172,7 @@ class MicrographiaDetector:
 class ParkinsonsFeaturesExtractor:
     """Comprehensive feature extraction for Parkinson's detection"""
     
-    def __init__(self, sampling_rate=100):
+    def __init__(self, sampling_rate=50):
         self.sampling_rate = sampling_rate
         self.micrographia_detector = MicrographiaDetector(sampling_rate)
     
