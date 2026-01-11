@@ -692,19 +692,19 @@ if __name__ == "__main__":
         acc_data = generate_simulated_data(duration=20, has_parkinsons=False)
         patient_data.append((acc_data, 0))  # 0 = healthy
 
-    """ print("Generating simulated patient data...")
+    print("Generating simulated patient data...")
     
     for i in range(15):
         acc_data = generate_simulated_data(duration=20, has_parkinsons=True)
         patient_data.append((acc_data, 1))  # 1 = Parkinson's
     
-    print(f"Generated {len(patient_data)} simulated patients") """
+    # print(f"Generated {len(patient_data)} simulated patients") """ """
 
     
-    print("loading colmi patient data...")
+    # print("loading colmi patient data...")
 
-    acc_data = load_colmi_data2("/Users/sundarveliah/Downloads/POO5SentTrial2.ring_data_20251221_234508.csv")
-    patient_data.append((acc_data, 1))  # 1 = Parkinson's
+    # acc_data = load_colmi_data2("/data/POO5SentTrial2.ring_data_20251221_234508.csv")
+    # patient_data.append((acc_data, 1))  # 1 = Parkinson's
 
     
     # ========================================================================
