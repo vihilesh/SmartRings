@@ -665,6 +665,119 @@ def load_colmi_data2(filepath):
     acc_data = df[['accX', 'accY', 'accZ']].values
     return acc_data
 
+def load_real_patient_data():
+
+    patient_data=[]
+    files = get_all_files("data/hd")
+    for file in files:
+        df = pd.read_csv(file)
+        acc_data = df[['accX', 'accY', 'accZ']].values
+        patient_data.append((acc_data, 0))  # 0 = healthy
+
+    files = get_all_files("data/pd")
+    for file in files:
+        df = pd.read_csv(file)
+        acc_data = df[['accX', 'accY', 'accZ']].values
+        patient_data.append((acc_data, 1))  # 1 = Parkinson's
+
+    return patient_data
+
+
+import os
+from pathlib import Path
+
+def get_all_files(directory_path):
+    """
+    Returns a list of all files in the specified directory.
+    
+    Args:
+        directory_path (str): Path to the directory
+        
+    Returns:
+        list: List of file paths (as strings)
+    """
+    files = []
+    
+    # Check if directory exists
+    if not os.path.exists(directory_path):
+        raise FileNotFoundError(f"Directory '{directory_path}' does not exist")
+    
+    if not os.path.isdir(directory_path):
+        raise NotADirectoryError(f"'{directory_path}' is not a directory")
+    
+    # Get all items in the directory
+    for item in os.listdir(directory_path):
+        item_path = os.path.join(directory_path, item)
+        
+        # Check if it's a file (not a directory)
+        if os.path.isfile(item_path):
+            files.append(item_path)
+    
+    return files
+
+
+def get_all_files_recursive(directory_path):
+    """
+    Returns all files in the directory and all subdirectories recursively.
+    
+    Args:
+        directory_path (str): Path to the directory
+        
+    Returns:
+        list: List of file paths (as strings)
+    """
+    files = []
+    
+    for root, dirs, filenames in os.walk(directory_path):
+        for filename in filenames:
+            files.append(os.path.join(root, filename))
+    
+    return files
+
+def simulate_patient_data():
+
+    patient_data=[]
+    print("Generating simulated healthy patient data...")
+    for i in range(15):
+        acc_data = generate_simulated_data(duration=20, has_parkinsons=False)
+        patient_data.append((acc_data, 0))  # 0 = healthy
+
+    print("Generating simulated PD patient data...")
+    
+    for i in range(15):
+        acc_data = generate_simulated_data(duration=20, has_parkinsons=True)
+        patient_data.append((acc_data, 1))  # 1 = Parkinson's
+
+    return patient_data
+
+
+""" # Example usage
+if __name__ == "__main__":
+    # Specify your directory path
+    directory = "."  # Current directory
+    
+    print("Files in directory (non-recursive):")
+    try:
+        files = get_all_files(directory)
+        for file in files:
+            print(f"  {file}")
+        print(f"\nTotal files: {len(files)}")
+    except (FileNotFoundError, NotADirectoryError) as e:
+        print(f"Error: {e}")
+    
+    print("\n" + "="*50 + "\n")
+    
+    print("Files in directory (recursive):")
+    try:
+        files_recursive = get_all_files_recursive(directory)
+        for file in files_recursive:
+            print(f"  {file}")
+        print(f"\nTotal files: {len(files_recursive)}")
+    except Exception as e:
+        print(f"Error: {e}") """
+
+
+
 
 # ============================================================================
 # PART 4: COMPLETE EXAMPLE USAGE
@@ -683,20 +796,20 @@ if __name__ == "__main__":
     print("="*80)
     print("\nWARNING: Using simulated data for demonstration.")
     print("Replace with real patient data for actual use!\n")
+
+  
     
     # Simulate 30 patients (15 healthy, 15 Parkinson's)
-    patient_data = []
-    
-    print("Generating simulated patient data...")
-    for i in range(15):
-        acc_data = generate_simulated_data(duration=20, has_parkinsons=False)
-        patient_data.append((acc_data, 0))  # 0 = healthy
+    # patient_data = []
 
-    print("Generating simulated patient data...")
+    # files = get_all_files("data/hd")
+    # for file in files:
+    #     print(f"  {file}")
+    # print(f"\nTotal files: {len(files)}")
     
-    for i in range(15):
-        acc_data = generate_simulated_data(duration=20, has_parkinsons=True)
-        patient_data.append((acc_data, 1))  # 1 = Parkinson's
+    
+    #patient_data = simulate_patient_data()
+    patient_data = load_real_patient_data()
     
     # print(f"Generated {len(patient_data)} simulated patients") """ """
 
