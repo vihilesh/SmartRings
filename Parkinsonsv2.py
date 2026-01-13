@@ -54,7 +54,7 @@ class MicrographiaDetector:
         low = 0.5 / nyquist
         high = 20.0 / nyquist
         b, a = signal.butter(4, [low, high], btype='band')
-        acc_filtered = signal.filtfilt(b, a, acc_magnitude)
+        acc_filtered = signal.filtfilt(b, a, acc_magnitude, axis=0)
         
         return np.abs(acc_filtered)
     
@@ -668,13 +668,14 @@ def load_colmi_data2(filepath):
 def load_real_patient_data():
 
     patient_data=[]
-    files = get_all_files("data/hd")
+    files = get_all_files("data/rhd")
     for file in files:
+        print(f"  {file}")
         df = pd.read_csv(file)
         acc_data = df[['accX', 'accY', 'accZ']].values
         patient_data.append((acc_data, 0))  # 0 = healthy
 
-    files = get_all_files("data/pd")
+    files = get_all_files("data/rpd")
     for file in files:
         df = pd.read_csv(file)
         acc_data = df[['accX', 'accY', 'accZ']].values
