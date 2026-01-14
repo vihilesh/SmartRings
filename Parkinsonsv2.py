@@ -904,7 +904,7 @@ if __name__ == "__main__":
     final_cv_results = ml_classifier.cross_validate(X_selected, y, cv_method='loocv')
     
     # Plot ROC curve
-    ml_classifier.plot_roc_curve(final_cv_results)
+    #ml_classifier.plot_roc_curve(final_cv_results)
     
     # ========================================================================
     # STEP 7: Make Predictions on New Patients
