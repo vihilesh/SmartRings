@@ -653,12 +653,6 @@ def generate_simulated_data(duration=20, sampling_rate=50, has_parkinsons=False)
     return acc_data
 
 
-def load_colmi_data(filepath):
-    """Load accelerometer data from Colmi ring - adjust to your format"""
-    df = pd.read_csv(filepath)
-    acc_data = df[['acc_x', 'acc_y', 'acc_z']].values
-    return acc_data
-
 def load_colmi_data2(filepath):
     """Load accelerometer data from Colmi ring - adjust to your format"""
     df = pd.read_csv(filepath)
@@ -752,31 +746,6 @@ def simulate_patient_data():
     return patient_data
 
 
-""" # Example usage
-if __name__ == "__main__":
-    # Specify your directory path
-    directory = "."  # Current directory
-    
-    print("Files in directory (non-recursive):")
-    try:
-        files = get_all_files(directory)
-        for file in files:
-            print(f"  {file}")
-        print(f"\nTotal files: {len(files)}")
-    except (FileNotFoundError, NotADirectoryError) as e:
-        print(f"Error: {e}")
-    
-    print("\n" + "="*50 + "\n")
-    
-    print("Files in directory (recursive):")
-    try:
-        files_recursive = get_all_files_recursive(directory)
-        for file in files_recursive:
-            print(f"  {file}")
-        print(f"\nTotal files: {len(files_recursive)}")
-    except Exception as e:
-        print(f"Error: {e}") """
-
 
 
 
@@ -797,29 +766,10 @@ if __name__ == "__main__":
     print("="*80)
     print("\nWARNING: Using simulated data for demonstration.")
     print("Replace with real patient data for actual use!\n")
-
-  
-    
-    # Simulate 30 patients (15 healthy, 15 Parkinson's)
-    # patient_data = []
-
-    # files = get_all_files("data/hd")
-    # for file in files:
-    #     print(f"  {file}")
-    # print(f"\nTotal files: {len(files)}")
     
     
     #patient_data = simulate_patient_data()
     patient_data = load_real_patient_data()
-    
-    # print(f"Generated {len(patient_data)} simulated patients") """ """
-
-    
-    # print("loading colmi patient data...")
-
-    # acc_data = load_colmi_data2("/data/POO5SentTrial2.ring_data_20251221_234508.csv")
-    # patient_data.append((acc_data, 1))  # 1 = Parkinson's
-
     
     # ========================================================================
     # STEP 2: Extract Features
@@ -915,14 +865,14 @@ if __name__ == "__main__":
     
     # Test on new simulated patients
     print("\nTesting on healthy patient...")
-    new_healthy_data = generate_simulated_data(duration=20, has_parkinsons=False)
+    new_healthy_data = load_colmi_data2("/Users/sundarveliah/Documents/SmartRings/data/rhd/PO13SentTrial1.ring_data_20260113_214229-mod.csv")
     prediction_healthy = ml_classifier.predict(new_healthy_data)
     print(f"  Prediction: {prediction_healthy['prediction']}")
     print(f"  Probability (Parkinson's): {prediction_healthy['probability_parkinsons']:.2%}")
     print(f"  Confidence: {prediction_healthy['confidence']}")
     
     print("\nTesting on Parkinson's patient...")
-    new_pd_data = generate_simulated_data(duration=20, has_parkinsons=True)
+    new_pd_data = load_colmi_data2("/Users/sundarveliah/Documents/SmartRings/data/rpd/PO10SentTrial1.ring_data_20251229_235828.csv")
     prediction_pd = ml_classifier.predict(new_pd_data)
     print(f"  Prediction: {prediction_pd['prediction']}")
     print(f"  Probability (Parkinson's): {prediction_pd['probability_parkinsons']:.2%}")
@@ -959,9 +909,9 @@ if __name__ == "__main__":
     print("COMPLETE PIPELINE DEMONSTRATION FINISHED")
     print("="*80)
     print("\nNEXT STEPS FOR REAL DEPLOYMENT:")
-    print("1. Replace simulated data with real Colmi ring data")
-    print("2. Collect data from diagnosed patients (with clinical validation)")
-    print("3. Retrain model on real patient cohort")
+    #print("1. Replace simulated data with real Colmi ring data")
+    #print("2. Collect data from diagnosed patients (with clinical validation)")
+    #print("3. Retrain model on real patient cohort")
     print("4. Perform external validation on independent test set")
     print("5. Consider regulatory requirements (FDA, CE marking)")
     print("="*80)
