@@ -19,6 +19,7 @@ from typing import Dict, List, Tuple
 from collections import Counter
 import warnings
 warnings.filterwarnings('ignore')
+#from ParkinsonsVisualizer import ParkinsonsVisualizer
 
 # Machine Learning imports
 from sklearn.model_selection import LeaveOneOut, cross_val_predict, cross_val_score
@@ -746,7 +747,15 @@ def simulate_patient_data():
     return patient_data
 
 
-
+def predict_patient(filepath) :
+    files = get_all_files(filepath)
+    for file in files:
+        print(f"  {file}")
+        new_healthy_data = load_colmi_data2(file)
+        prediction_healthy = ml_classifier.predict(new_healthy_data)
+        print(f"  Prediction: {prediction_healthy['prediction']}")
+        print(f"  Probability (Parkinson's): {prediction_healthy['probability_parkinsons']:.2%}")
+        print(f"  Confidence: {prediction_healthy['confidence']}")
 
 
 # ============================================================================
@@ -757,6 +766,8 @@ if __name__ == "__main__":
     print("="*80)
     print("COMPLETE PARKINSON'S DETECTION SYSTEM WITH MACHINE LEARNING")
     print("="*80)
+
+    #viz = ParkinsonsVisualizer.ParkinsonsVisualizer()
     
     # ========================================================================
     # STEP 1: Generate Simulated Dataset (replace with real data!)
@@ -864,19 +875,22 @@ if __name__ == "__main__":
     print("="*80)
     
     # Test on new simulated patients
-    print("\nTesting on healthy patient...")
-    new_healthy_data = load_colmi_data2("/Users/sundarveliah/Documents/SmartRings/data/rhd/PO13SentTrial1.ring_data_20260113_214229-mod.csv")
-    prediction_healthy = ml_classifier.predict(new_healthy_data)
-    print(f"  Prediction: {prediction_healthy['prediction']}")
-    print(f"  Probability (Parkinson's): {prediction_healthy['probability_parkinsons']:.2%}")
-    print(f"  Confidence: {prediction_healthy['confidence']}")
+    # print("\nTesting on healthy patient...")
+    predict_patient("data/rhd")
+    print("\n" + "="*80)
+    predict_patient("data/rpd")
+    # new_healthy_data = load_colmi_data2("/Users/sundarveliah/Documents/SmartRings/data/rhd/POO2SentTrial1.ring_data_20251221_035514-mod.csv")
+    # prediction_healthy = ml_classifier.predict(new_healthy_data)
+    # print(f"  Prediction: {prediction_healthy['prediction']}")
+    # print(f"  Probability (Parkinson's): {prediction_healthy['probability_parkinsons']:.2%}")
+    # print(f"  Confidence: {prediction_healthy['confidence']}")
     
-    print("\nTesting on Parkinson's patient...")
-    new_pd_data = load_colmi_data2("/Users/sundarveliah/Documents/SmartRings/data/rpd/PO10SentTrial1.ring_data_20251229_235828.csv")
-    prediction_pd = ml_classifier.predict(new_pd_data)
-    print(f"  Prediction: {prediction_pd['prediction']}")
-    print(f"  Probability (Parkinson's): {prediction_pd['probability_parkinsons']:.2%}")
-    print(f"  Confidence: {prediction_pd['confidence']}")
+    # print("\nTesting on Parkinson's patient...")
+    # new_pd_data = load_colmi_data2("/Users/sundarveliah/Documents/SmartRings/data/rpd/POO5SentTrial2.ring_data_20251221_234508.csv")
+    # prediction_pd = ml_classifier.predict(new_pd_data)
+    # print(f"  Prediction: {prediction_pd['prediction']}")
+    # print(f"  Probability (Parkinson's): {prediction_pd['probability_parkinsons']:.2%}")
+    # print(f"  Confidence: {prediction_pd['confidence']}")
     
     # ========================================================================
     # STEP 8: Save Model
@@ -900,7 +914,8 @@ if __name__ == "__main__":
     
     # Make prediction with loaded model
     print("\nMaking prediction with loaded model...")
-    test_data = generate_simulated_data(duration=20, has_parkinsons=True)
+    #test_data = generate_simulated_data(duration=20, has_parkinsons=True)
+    test_data = load_colmi_data2("/Users/sundarveliah/Documents/SmartRings/data/rhd/PO13SentTrial1.ring_data_20260113_214229-mod.csv")
     prediction = new_classifier.predict(test_data)
     print(f"  Prediction: {prediction['prediction']}")
     print(f"  Probability: {prediction['probability_parkinsons']:.2%}")
