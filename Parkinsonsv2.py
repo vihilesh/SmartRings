@@ -667,12 +667,15 @@ def load_real_patient_data():
     for file in files:
         print(f"  {file}")
         df = pd.read_csv(file)
+        df.columns = df.columns.str.strip() 
         acc_data = df[['accX', 'accY', 'accZ']].values
         patient_data.append((acc_data, 0))  # 0 = healthy
 
     files = get_all_files("data/rpd")
     for file in files:
+        print(f"  {file}")
         df = pd.read_csv(file)
+        df.columns = df.columns.str.strip() 
         acc_data = df[['accX', 'accY', 'accZ']].values
         patient_data.append((acc_data, 1))  # 1 = Parkinson's
 
