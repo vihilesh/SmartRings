@@ -15,3 +15,5 @@ samples from healthy patients and directory rpd is where resampled writing data 
 directory and calculates various features of the handwriting like jerk, velocity, amplitude etc for healthy and parkinsons patients and compares them. It then
 creates a model, separates out the data into 80% training set and 20% testing set to see how good the model is. 
 
+
+
